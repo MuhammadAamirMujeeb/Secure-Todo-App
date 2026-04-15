@@ -173,25 +173,41 @@ BetterAuth supports email verification and social OAuth providers. These were ou
 
 ```
 ├── app/
-│   ├── (auth)/sign-in/     # Sign-in page
-│   ├── (auth)/sign-up/     # Sign-up page
-│   ├── api/auth/[...all]/  # BetterAuth catch-all
-│   ├── dashboard/          # Todo dashboard (Server Component)
-│   │   └── _components/    # Client components
-│   ├── layout.tsx
-│   └── page.tsx            # Landing / redirect
+│   ├── (auth)/                     # Auth route group
+│   │   ├── layout.tsx              # Centered card layout for auth pages
+│   │   ├── sign-in/page.tsx        # Sign-in form (Client Component)
+│   │   └── sign-up/page.tsx        # Sign-up form (Client Component)
+│   ├── api/auth/[...all]/route.ts  # BetterAuth catch-all handler
+│   ├── dashboard/
+│   │   ├── _components/            # Route-scoped Client Components
+│   │   │   ├── create-todo.tsx     # Add task form with useTransition
+│   │   │   ├── todo-list.tsx       # Renders todo items or empty state
+│   │   │   ├── todo-item.tsx       # Checkbox + title + delete button
+│   │   │   ├── todo-skeleton.tsx   # Suspense skeleton loader
+│   │   │   └── sign-out-button.tsx # BetterAuth sign-out trigger
+│   │   └── page.tsx                # Dashboard (Server Component)
+│   ├── globals.css                 # Design tokens, component classes, dark mode
+│   ├── layout.tsx                  # Root layout with fonts and metadata
+│   └── page.tsx                    # Landing page / auth redirect
 ├── server/
-│   ├── auth.ts             # BetterAuth server config
-│   ├── crypto.ts           # AES-256-GCM encrypt/decrypt
+│   ├── auth.ts                     # BetterAuth server config + drizzle adapter
+│   ├── crypto.ts                   # AES-256-GCM encrypt/decrypt utilities
 │   └── db/
-│       ├── index.ts        # Drizzle client
-│       ├── schema.ts       # Table schemas
-│       └── migrations/     # Generated SQL migrations
+│       ├── index.ts                # Drizzle client (better-sqlite3)
+│       ├── schema.ts               # All table schemas (users, sessions, todos…)
+│       └── migrations/             # Drizzle-kit generated SQL migrations
 ├── lib/
-│   ├── auth-client.ts      # BetterAuth client
-│   ├── validators.ts       # Zod schemas
+│   ├── auth-client.ts              # BetterAuth browser client
+│   ├── validators.ts               # Zod schemas for Server Action inputs
 │   └── actions/
-│       └── todo-actions.ts # Server Actions (CRUD)
-├── middleware.ts            # Route protection
-└── drizzle.config.ts
+│       └── todo-actions.ts         # createTodo / getTodos / toggleTodo / deleteTodo
+├── components/
+│   └── ui/                         # Shared UI primitives (reserved for future use)
+├── docs/
+│   ├── rules.md                    # Project rules and coding standards
+│   └── prompt.md                   # Original build prompt / specification
+├── middleware.ts                   # Cookie-based route protection for /dashboard
+├── drizzle.config.ts               # Drizzle-kit config (schema path, DB dialect)
+├── AI_DEVELOPMENT_LOG.md           # Tool usage, prompts, and time log
+└── README.md
 ```
